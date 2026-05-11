@@ -3,9 +3,26 @@ import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PillButton } from "@/components/PillButton";
-import { Check, Mail, User, ArrowRight, Calendar, Clock, Copy, MessageCircle, Share2, CheckCircle2 } from "lucide-react";
+import { Check, Mail, User, Calendar, Clock, Copy, MessageCircle, Share2, CheckCircle2, X } from "lucide-react";
 import mystery from "@/assets/mystery.jpg";
 import cook from "@/assets/cook.jpg";
+
+type Pkg = {
+  id: string;
+  name: string;
+  best: string;
+  price: string;
+  perUser?: string;
+  features: string[];
+};
+
+const PACKAGES: Pkg[] = [
+  { id: "trial", name: "Trial Pack", best: "Best for: Small teams, workshops, family events", price: "₹499", features: ["Up to 5 participants", "1 auto-created groups", "Single session", "Lets you test before buying"] },
+  { id: "starter", name: "Starter Pack", best: "Best for: Training sessions, mid-size teams", price: "₹2,999", perUser: "₹60/user", features: ["Up to 50 participants", "10 auto-created groups", "Even user distribution", "Instant activation"] },
+  { id: "growth", name: "Growth Pack", best: "Best for: Corporate events and team engagement", price: "₹4,999", perUser: "₹50/user", features: ["Up to 100 participants", "20 auto-created groups", "Even user distribution", "Instant activation"] },
+  { id: "business", name: "Business Pack", best: "Best for: Large corporate events and offsites", price: "₹8,999", perUser: "₹45/user", features: ["Up to 300 participants", "60 auto-created groups", "Even user distribution", "Instant activation"] },
+  { id: "enterprise", name: "Enterprise Pack", best: "Best for: Training sessions, mid-size teams", price: "₹19,999", perUser: "₹40/user", features: ["Up to 500 participants", "100 auto-created groups", "Even user distribution", "Fully managed setup"] },
+];
 
 export const Route = createFileRoute("/create")({
   head: () => ({
