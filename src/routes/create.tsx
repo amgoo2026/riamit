@@ -309,7 +309,13 @@ function PackageModal({ current, onClose, onConfirm }: { current: Pkg | null; on
   );
 }
 
-function PaymentStep({ onNext }: { onNext: () => void }) {
+function PaymentStep({ onNext, pkg }: { onNext: () => void; pkg: Pkg | null }) {
+  const priceNum = pkg ? Number(pkg.price.replace(/[^\d]/g, "")) : 0;
+  const taxes = Math.round(priceNum * 0.06);
+  const gst = Math.round(priceNum * 0.04);
+  const total = priceNum + taxes + gst;
+  const fmt = (n: number) => "₹" + n.toLocaleString("en-IN");
+
   return (
     <form onSubmit={(e) => { e.preventDefault(); onNext(); }} className="space-y-5">
       <div>
@@ -317,22 +323,52 @@ function PaymentStep({ onNext }: { onNext: () => void }) {
         <p className="text-sm text-muted-foreground mt-1">Complete payment to generate your access link and start your activity.</p>
       </div>
 
+      <div>
+        <p className="text-sm font-semibold mb-2">Organizer Details</p>
+        <div className="rounded-xl border border-border p-4 grid grid-cols-2 gap-3 text-sm">
+          <div><p className="text-xs text-muted-foreground">Full Name</p><p className="font-medium">Saurabh Chandra Rai</p></div>
+          <div><p className="text-xs text-muted-foreground">Official Email ID</p><p className="font-medium">Saurabh@inocreation.com</p></div>
+          <div><p className="text-xs text-muted-foreground">Company / Organization Name</p><p className="font-medium">Inocreation Technologies</p></div>
+          <div><p className="text-xs text-muted-foreground">Company Website</p><p className="font-medium">inocreation.com</p></div>
+        </div>
+      </div>
+
       <Section title="Activity & Package">
         <Row k="Selected Activity" v="Mystery Quest" />
-        <Row k="Selected Package" v="Growth Pack — ₹4,999" />
+        <Row k="Selected Package" v={pkg ? `${pkg.name} @ ${pkg.price}` : "—"} />
       </Section>
 
-      <Section title="Pricing Details">
-        <Row k="Package Price" v="₹4,999" />
-        <Row k="Taxes" v="₹300" />
-        <Row k="GST Amount" v="₹200" />
-        <div className="border-t border-border pt-2.5 mt-2.5">
-          <Row k="Total Payable" v="₹5,499" bold />
-        </div>
+      <Section title="Schedule">
+        <Row k="Date" v="02 Apr 2026" />
+        <Row k="Start Time" v="11:00 AM" />
       </Section>
 
       <div>
-        <p className="text-sm font-semibold mb-2">Select Payment Method</p>
+        <p className="text-sm font-semibold">Billing Details (GST Invoice)</p>
+        <p className="text-xs text-muted-foreground mt-0.5">A GST invoice will be automatically generated and sent to your registered email after successful payment</p>
+        <div className="mt-3 space-y-3">
+          <BField label="GST Number" placeholder="Enter GST Number" />
+          <BField label="Billing Address" placeholder="Enter Billing Address" />
+          <div className="grid grid-cols-2 gap-3">
+            <BField label="City" placeholder="Enter City" />
+            <BField label="State" placeholder="Enter State" />
+          </div>
+          <BField label="PIN Code" placeholder="Enter PIN Code" />
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border p-4 space-y-2">
+        <Row k="Package Price" v={fmt(priceNum)} />
+        <Row k="Taxes" v={fmt(taxes)} />
+        <Row k="Additional Charges" v="₹0" />
+        <Row k="GST Amount" v={fmt(gst)} />
+        <div className="border-t border-border pt-2.5 mt-2.5">
+          <Row k="Total Payable" v={fmt(total)} bold />
+        </div>
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold mb-2">Select payment Method</p>
         <div className="grid grid-cols-2 gap-3">
           {["UPI", "Paytm", "Debit/Credit Card", "Net Banking"].map((m, i) => (
             <label key={m} className={`flex items-center gap-2 rounded-lg border p-3 text-sm cursor-pointer ${i === 0 ? "border-primary bg-primary/5" : "border-input"}`}>
@@ -342,18 +378,29 @@ function PaymentStep({ onNext }: { onNext: () => void }) {
         </div>
       </div>
 
-      <div className="space-y-2 text-xs">
+      <div className="rounded-xl bg-purple-50 p-4 space-y-2 text-xs">
         {[
-          "I confirm I am an authorized representative of my organization.",
-          "I confirm all participants have been informed about the session.",
+          "I confirm I am an authorized representative of my organization and have approval to create this session on its behalf.",
+          "I confirm that all participants have been informed about this session and have consented to participate.",
           "I have read and agree to the Terms & Conditions and Privacy Policy.",
+          "I understand this is a non-refundable digital service after activation, except in cases of verified technical failure on Zoventro's platform as outlined in the Refund Policy.",
+          "I understand the session must be used within 5 days of activation, after which all access will expire automatically.",
         ].map((t) => (
-          <label key={t} className="flex items-start gap-2"><input type="checkbox" className="mt-0.5 accent-primary" /> {t}</label>
+          <label key={t} className="flex items-start gap-2"><input type="checkbox" className="mt-0.5 accent-primary" /> <span>{t}</span></label>
         ))}
       </div>
 
       <PillButton type="submit" variant="primary">Pay &amp; Activate Event</PillButton>
     </form>
+  );
+}
+
+function BField({ label, placeholder }: { label: string; placeholder: string }) {
+  return (
+    <div>
+      <label className="text-xs font-medium">{label}</label>
+      <input type="text" placeholder={placeholder} className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+    </div>
   );
 }
 
