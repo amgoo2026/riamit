@@ -3,9 +3,26 @@ import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PillButton } from "@/components/PillButton";
-import { Check, Mail, User, ArrowRight, Calendar, Clock, Copy, MessageCircle, Share2, CheckCircle2 } from "lucide-react";
+import { Check, Mail, User, Calendar, Clock, Copy, MessageCircle, Share2, CheckCircle2, X } from "lucide-react";
 import mystery from "@/assets/mystery.jpg";
 import cook from "@/assets/cook.jpg";
+
+type Pkg = {
+  id: string;
+  name: string;
+  best: string;
+  price: string;
+  perUser?: string;
+  features: string[];
+};
+
+const PACKAGES: Pkg[] = [
+  { id: "trial", name: "Trial Pack", best: "Best for: Small teams, workshops, family events", price: "₹499", features: ["Up to 5 participants", "1 auto-created groups", "Single session", "Lets you test before buying"] },
+  { id: "starter", name: "Starter Pack", best: "Best for: Training sessions, mid-size teams", price: "₹2,999", perUser: "₹60/user", features: ["Up to 50 participants", "10 auto-created groups", "Even user distribution", "Instant activation"] },
+  { id: "growth", name: "Growth Pack", best: "Best for: Corporate events and team engagement", price: "₹4,999", perUser: "₹50/user", features: ["Up to 100 participants", "20 auto-created groups", "Even user distribution", "Instant activation"] },
+  { id: "business", name: "Business Pack", best: "Best for: Large corporate events and offsites", price: "₹8,999", perUser: "₹45/user", features: ["Up to 300 participants", "60 auto-created groups", "Even user distribution", "Instant activation"] },
+  { id: "enterprise", name: "Enterprise Pack", best: "Best for: Training sessions, mid-size teams", price: "₹19,999", perUser: "₹40/user", features: ["Up to 500 participants", "100 auto-created groups", "Even user distribution", "Fully managed setup"] },
+];
 
 export const Route = createFileRoute("/create")({
   head: () => ({
@@ -23,6 +40,7 @@ const STEPS = ["Details", "Verify", "Setup", "Payment"];
 function CreatePage() {
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
+  const [pkg, setPkg] = useState<Pkg | null>(null);
 
   return (
     <div className="min-h-screen pb-10">
@@ -47,8 +65,8 @@ function CreatePage() {
               <div className="mt-8">
                 {step === 0 && <DetailsStep onNext={() => setStep(1)} />}
                 {step === 1 && <VerifyStep onNext={() => setStep(2)} />}
-                {step === 2 && <SetupStep onNext={() => setStep(3)} />}
-                {step === 3 && <PaymentStep onNext={() => setDone(true)} />}
+                {step === 2 && <SetupStep onNext={() => setStep(3)} pkg={pkg} setPkg={setPkg} />}
+                {step === 3 && <PaymentStep onNext={() => setDone(true)} pkg={pkg} />}
               </div>
             </div>
           </div>
@@ -142,8 +160,9 @@ function VerifyStep({ onNext }: { onNext: () => void }) {
   );
 }
 
-function SetupStep({ onNext }: { onNext: () => void }) {
+function SetupStep({ onNext, pkg, setPkg }: { onNext: () => void; pkg: Pkg | null; setPkg: (p: Pkg) => void }) {
   const [activity, setActivity] = useState("mystery");
+  const [open, setOpen] = useState(false);
   return (
     <form onSubmit={(e) => { e.preventDefault(); onNext(); }} className="space-y-5">
       <div>
@@ -177,10 +196,34 @@ function SetupStep({ onNext }: { onNext: () => void }) {
       </div>
 
       <div>
-        <label className="text-sm font-semibold">Choose your Package</label>
-        <button type="button" className="mt-2 w-full rounded-xl border border-input p-2 flex justify-center">
-          <span className="rounded-full bg-purple-100 text-primary px-5 py-1.5 text-sm font-medium">Choose Package</span>
-        </button>
+        <div className="flex items-center justify-between">
+          <label className="text-sm font-semibold">Choose your Package</label>
+          {pkg && (
+            <button type="button" onClick={() => setOpen(true)} className="rounded-full bg-purple-100 text-primary px-4 py-1 text-xs font-medium">Change Package</button>
+          )}
+        </div>
+        {pkg ? (
+          <div className="mt-2 rounded-xl border-2 border-primary p-4 grid grid-cols-2 gap-4">
+            <div>
+              <p className="font-bold">{pkg.name}</p>
+              <p className="text-xs text-muted-foreground mt-1">{pkg.best}</p>
+              <p className="mt-2 text-lg font-bold">{pkg.price} <span className="text-xs font-normal text-muted-foreground">One Time Payment</span></p>
+              {pkg.perUser && <p className="text-xs text-muted-foreground">{pkg.perUser}</p>}
+            </div>
+            <div>
+              <p className="text-xs font-semibold mb-1">This plan includes:</p>
+              <ul className="space-y-1">
+                {pkg.features.map((f) => (
+                  <li key={f} className="flex items-start gap-1.5 text-xs"><Check className="h-3.5 w-3.5 text-success mt-0.5 shrink-0" />{f}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ) : (
+          <button type="button" onClick={() => setOpen(true)} className="mt-2 w-full rounded-xl border border-input p-2 flex justify-center">
+            <span className="rounded-full bg-purple-100 text-primary px-5 py-1.5 text-sm font-medium">Choose Package</span>
+          </button>
+        )}
       </div>
 
       <div className="rounded-xl bg-purple-50 p-4 text-xs text-foreground/80 space-y-1.5">
@@ -207,12 +250,72 @@ function SetupStep({ onNext }: { onNext: () => void }) {
         </div>
       </div>
 
-      <PillButton type="submit" variant="primary">Continue to Payment</PillButton>
+      <PillButton type="submit" variant="primary" disabled={!pkg}>Continue to Payment</PillButton>
+
+      {open && (
+        <PackageModal
+          current={pkg}
+          onClose={() => setOpen(false)}
+          onConfirm={(p) => { setPkg(p); setOpen(false); }}
+        />
+      )}
     </form>
   );
 }
 
-function PaymentStep({ onNext }: { onNext: () => void }) {
+function PackageModal({ current, onClose, onConfirm }: { current: Pkg | null; onClose: () => void; onConfirm: (p: Pkg) => void }) {
+  const [sel, setSel] = useState<Pkg | null>(current ?? PACKAGES[1]);
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4" onClick={onClose}>
+      <div className="bg-card rounded-3xl shadow-elevated w-full max-w-5xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-6 border-b border-border">
+          <h3 className="text-xl font-bold">Choose your Package</h3>
+          <button type="button" onClick={onClose} className="h-9 w-9 grid place-items-center rounded-full hover:bg-muted"><X className="h-5 w-5" /></button>
+        </div>
+        <div className="p-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {PACKAGES.map((p) => {
+            const active = sel?.id === p.id;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => setSel(p)}
+                className={`text-left rounded-2xl border-2 p-5 transition ${active ? "border-primary shadow-glow" : "border-border"}`}
+              >
+                <div className="flex items-start justify-between">
+                  <p className="font-bold">{p.name}</p>
+                  <span className={`h-5 w-5 rounded-full border-2 grid place-items-center ${active ? "border-primary" : "border-muted-foreground"}`}>
+                    {active && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2 min-h-[32px]">{p.best}</p>
+                <p className="mt-3 text-xl font-bold">{p.price} {p.perUser && <span className="text-xs font-normal text-muted-foreground">{p.perUser}</span>}<span className="text-xs font-normal text-muted-foreground"> One Time Payment</span></p>
+                <p className="text-xs font-semibold mt-4">This plan includes:</p>
+                <ul className="mt-2 space-y-1.5">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-xs"><Check className="h-3.5 w-3.5 text-success mt-0.5 shrink-0" />{f}</li>
+                  ))}
+                </ul>
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex justify-between gap-3 p-6 border-t border-border">
+          <button type="button" onClick={onClose} className="rounded-full border border-border px-6 py-2.5 text-sm">Cancel</button>
+          <button type="button" disabled={!sel} onClick={() => sel && onConfirm(sel)} className="rounded-full bg-gradient-primary text-white px-8 py-2.5 text-sm font-medium shadow-glow disabled:opacity-50">Confirm</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PaymentStep({ onNext, pkg }: { onNext: () => void; pkg: Pkg | null }) {
+  const priceNum = pkg ? Number(pkg.price.replace(/[^\d]/g, "")) : 0;
+  const taxes = Math.round(priceNum * 0.06);
+  const gst = Math.round(priceNum * 0.04);
+  const total = priceNum + taxes + gst;
+  const fmt = (n: number) => "₹" + n.toLocaleString("en-IN");
+
   return (
     <form onSubmit={(e) => { e.preventDefault(); onNext(); }} className="space-y-5">
       <div>
@@ -220,22 +323,52 @@ function PaymentStep({ onNext }: { onNext: () => void }) {
         <p className="text-sm text-muted-foreground mt-1">Complete payment to generate your access link and start your activity.</p>
       </div>
 
+      <div>
+        <p className="text-sm font-semibold mb-2">Organizer Details</p>
+        <div className="rounded-xl border border-border p-4 grid grid-cols-2 gap-3 text-sm">
+          <div><p className="text-xs text-muted-foreground">Full Name</p><p className="font-medium">Saurabh Chandra Rai</p></div>
+          <div><p className="text-xs text-muted-foreground">Official Email ID</p><p className="font-medium">Saurabh@inocreation.com</p></div>
+          <div><p className="text-xs text-muted-foreground">Company / Organization Name</p><p className="font-medium">Inocreation Technologies</p></div>
+          <div><p className="text-xs text-muted-foreground">Company Website</p><p className="font-medium">inocreation.com</p></div>
+        </div>
+      </div>
+
       <Section title="Activity & Package">
         <Row k="Selected Activity" v="Mystery Quest" />
-        <Row k="Selected Package" v="Growth Pack — ₹4,999" />
+        <Row k="Selected Package" v={pkg ? `${pkg.name} @ ${pkg.price}` : "—"} />
       </Section>
 
-      <Section title="Pricing Details">
-        <Row k="Package Price" v="₹4,999" />
-        <Row k="Taxes" v="₹300" />
-        <Row k="GST Amount" v="₹200" />
-        <div className="border-t border-border pt-2.5 mt-2.5">
-          <Row k="Total Payable" v="₹5,499" bold />
-        </div>
+      <Section title="Schedule">
+        <Row k="Date" v="02 Apr 2026" />
+        <Row k="Start Time" v="11:00 AM" />
       </Section>
 
       <div>
-        <p className="text-sm font-semibold mb-2">Select Payment Method</p>
+        <p className="text-sm font-semibold">Billing Details (GST Invoice)</p>
+        <p className="text-xs text-muted-foreground mt-0.5">A GST invoice will be automatically generated and sent to your registered email after successful payment</p>
+        <div className="mt-3 space-y-3">
+          <BField label="GST Number" placeholder="Enter GST Number" />
+          <BField label="Billing Address" placeholder="Enter Billing Address" />
+          <div className="grid grid-cols-2 gap-3">
+            <BField label="City" placeholder="Enter City" />
+            <BField label="State" placeholder="Enter State" />
+          </div>
+          <BField label="PIN Code" placeholder="Enter PIN Code" />
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-border p-4 space-y-2">
+        <Row k="Package Price" v={fmt(priceNum)} />
+        <Row k="Taxes" v={fmt(taxes)} />
+        <Row k="Additional Charges" v="₹0" />
+        <Row k="GST Amount" v={fmt(gst)} />
+        <div className="border-t border-border pt-2.5 mt-2.5">
+          <Row k="Total Payable" v={fmt(total)} bold />
+        </div>
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold mb-2">Select payment Method</p>
         <div className="grid grid-cols-2 gap-3">
           {["UPI", "Paytm", "Debit/Credit Card", "Net Banking"].map((m, i) => (
             <label key={m} className={`flex items-center gap-2 rounded-lg border p-3 text-sm cursor-pointer ${i === 0 ? "border-primary bg-primary/5" : "border-input"}`}>
@@ -245,18 +378,29 @@ function PaymentStep({ onNext }: { onNext: () => void }) {
         </div>
       </div>
 
-      <div className="space-y-2 text-xs">
+      <div className="rounded-xl bg-purple-50 p-4 space-y-2 text-xs">
         {[
-          "I confirm I am an authorized representative of my organization.",
-          "I confirm all participants have been informed about the session.",
+          "I confirm I am an authorized representative of my organization and have approval to create this session on its behalf.",
+          "I confirm that all participants have been informed about this session and have consented to participate.",
           "I have read and agree to the Terms & Conditions and Privacy Policy.",
+          "I understand this is a non-refundable digital service after activation, except in cases of verified technical failure on Zoventro's platform as outlined in the Refund Policy.",
+          "I understand the session must be used within 5 days of activation, after which all access will expire automatically.",
         ].map((t) => (
-          <label key={t} className="flex items-start gap-2"><input type="checkbox" className="mt-0.5 accent-primary" /> {t}</label>
+          <label key={t} className="flex items-start gap-2"><input type="checkbox" className="mt-0.5 accent-primary" /> <span>{t}</span></label>
         ))}
       </div>
 
       <PillButton type="submit" variant="primary">Pay &amp; Activate Event</PillButton>
     </form>
+  );
+}
+
+function BField({ label, placeholder }: { label: string; placeholder: string }) {
+  return (
+    <div>
+      <label className="text-xs font-medium">{label}</label>
+      <input type="text" placeholder={placeholder} className="mt-1 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+    </div>
   );
 }
 
