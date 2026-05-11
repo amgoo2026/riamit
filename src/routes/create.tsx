@@ -160,8 +160,9 @@ function VerifyStep({ onNext }: { onNext: () => void }) {
   );
 }
 
-function SetupStep({ onNext }: { onNext: () => void }) {
+function SetupStep({ onNext, pkg, setPkg }: { onNext: () => void; pkg: Pkg | null; setPkg: (p: Pkg) => void }) {
   const [activity, setActivity] = useState("mystery");
+  const [open, setOpen] = useState(false);
   return (
     <form onSubmit={(e) => { e.preventDefault(); onNext(); }} className="space-y-5">
       <div>
@@ -195,10 +196,34 @@ function SetupStep({ onNext }: { onNext: () => void }) {
       </div>
 
       <div>
-        <label className="text-sm font-semibold">Choose your Package</label>
-        <button type="button" className="mt-2 w-full rounded-xl border border-input p-2 flex justify-center">
-          <span className="rounded-full bg-purple-100 text-primary px-5 py-1.5 text-sm font-medium">Choose Package</span>
-        </button>
+        <div className="flex items-center justify-between">
+          <label className="text-sm font-semibold">Choose your Package</label>
+          {pkg && (
+            <button type="button" onClick={() => setOpen(true)} className="rounded-full bg-purple-100 text-primary px-4 py-1 text-xs font-medium">Change Package</button>
+          )}
+        </div>
+        {pkg ? (
+          <div className="mt-2 rounded-xl border-2 border-primary p-4 grid grid-cols-2 gap-4">
+            <div>
+              <p className="font-bold">{pkg.name}</p>
+              <p className="text-xs text-muted-foreground mt-1">{pkg.best}</p>
+              <p className="mt-2 text-lg font-bold">{pkg.price} <span className="text-xs font-normal text-muted-foreground">One Time Payment</span></p>
+              {pkg.perUser && <p className="text-xs text-muted-foreground">{pkg.perUser}</p>}
+            </div>
+            <div>
+              <p className="text-xs font-semibold mb-1">This plan includes:</p>
+              <ul className="space-y-1">
+                {pkg.features.map((f) => (
+                  <li key={f} className="flex items-start gap-1.5 text-xs"><Check className="h-3.5 w-3.5 text-success mt-0.5 shrink-0" />{f}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ) : (
+          <button type="button" onClick={() => setOpen(true)} className="mt-2 w-full rounded-xl border border-input p-2 flex justify-center">
+            <span className="rounded-full bg-purple-100 text-primary px-5 py-1.5 text-sm font-medium">Choose Package</span>
+          </button>
+        )}
       </div>
 
       <div className="rounded-xl bg-purple-50 p-4 text-xs text-foreground/80 space-y-1.5">
@@ -225,8 +250,62 @@ function SetupStep({ onNext }: { onNext: () => void }) {
         </div>
       </div>
 
-      <PillButton type="submit" variant="primary">Continue to Payment</PillButton>
+      <PillButton type="submit" variant="primary" disabled={!pkg}>Continue to Payment</PillButton>
+
+      {open && (
+        <PackageModal
+          current={pkg}
+          onClose={() => setOpen(false)}
+          onConfirm={(p) => { setPkg(p); setOpen(false); }}
+        />
+      )}
     </form>
+  );
+}
+
+function PackageModal({ current, onClose, onConfirm }: { current: Pkg | null; onClose: () => void; onConfirm: (p: Pkg) => void }) {
+  const [sel, setSel] = useState<Pkg | null>(current ?? PACKAGES[1]);
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4" onClick={onClose}>
+      <div className="bg-card rounded-3xl shadow-elevated w-full max-w-5xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between p-6 border-b border-border">
+          <h3 className="text-xl font-bold">Choose your Package</h3>
+          <button type="button" onClick={onClose} className="h-9 w-9 grid place-items-center rounded-full hover:bg-muted"><X className="h-5 w-5" /></button>
+        </div>
+        <div className="p-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {PACKAGES.map((p) => {
+            const active = sel?.id === p.id;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => setSel(p)}
+                className={`text-left rounded-2xl border-2 p-5 transition ${active ? "border-primary shadow-glow" : "border-border"}`}
+              >
+                <div className="flex items-start justify-between">
+                  <p className="font-bold">{p.name}</p>
+                  <span className={`h-5 w-5 rounded-full border-2 grid place-items-center ${active ? "border-primary" : "border-muted-foreground"}`}>
+                    {active && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}
+                  </span>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2 min-h-[32px]">{p.best}</p>
+                <p className="mt-3 text-xl font-bold">{p.price} {p.perUser && <span className="text-xs font-normal text-muted-foreground">{p.perUser}</span>}<span className="text-xs font-normal text-muted-foreground"> One Time Payment</span></p>
+                <p className="text-xs font-semibold mt-4">This plan includes:</p>
+                <ul className="mt-2 space-y-1.5">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-xs"><Check className="h-3.5 w-3.5 text-success mt-0.5 shrink-0" />{f}</li>
+                  ))}
+                </ul>
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex justify-between gap-3 p-6 border-t border-border">
+          <button type="button" onClick={onClose} className="rounded-full border border-border px-6 py-2.5 text-sm">Cancel</button>
+          <button type="button" disabled={!sel} onClick={() => sel && onConfirm(sel)} className="rounded-full bg-gradient-primary text-white px-8 py-2.5 text-sm font-medium shadow-glow disabled:opacity-50">Confirm</button>
+        </div>
+      </div>
+    </div>
   );
 }
 
