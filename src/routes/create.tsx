@@ -40,6 +40,7 @@ const STEPS = ["Details", "Verify", "Setup", "Payment"];
 function CreatePage() {
   const [step, setStep] = useState(0);
   const [done, setDone] = useState(false);
+  const [pkg, setPkg] = useState<Pkg | null>(null);
 
   return (
     <div className="min-h-screen pb-10">
@@ -64,8 +65,8 @@ function CreatePage() {
               <div className="mt-8">
                 {step === 0 && <DetailsStep onNext={() => setStep(1)} />}
                 {step === 1 && <VerifyStep onNext={() => setStep(2)} />}
-                {step === 2 && <SetupStep onNext={() => setStep(3)} />}
-                {step === 3 && <PaymentStep onNext={() => setDone(true)} />}
+                {step === 2 && <SetupStep onNext={() => setStep(3)} pkg={pkg} setPkg={setPkg} />}
+                {step === 3 && <PaymentStep onNext={() => setDone(true)} pkg={pkg} />}
               </div>
             </div>
           </div>
