@@ -1,13 +1,13 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { useRouterState } from "@tanstack/react-router";
 import { LayoutGrid, Users, Layers, Trophy, Settings, Minimize2, Bell, ChevronDown, User } from "lucide-react";
 import type { ReactNode } from "react";
 import { Logo } from "./Logo";
 
 const NAV = [
   { label: "Dashboard", to: "/dashboard", icon: LayoutGrid },
-  { label: "Participants", to: "/dashboard/participants", icon: Users },
-  { label: "Groups", to: "/dashboard/groups", icon: Layers },
-  { label: "Results", to: "/dashboard/results", icon: Trophy },
+  { label: "Participants", to: "#", icon: Users },
+  { label: "Groups", to: "#", icon: Layers },
+  { label: "Results", to: "#", icon: Trophy },
 ];
 
 const FOOT = [
@@ -33,9 +33,9 @@ export function DashboardShell({ crumb, children }: { crumb: string; children: R
               {NAV.map((n) => {
                 const active = path === n.to;
                 return (
-                  <Link
-                    key={n.to}
-                    to={n.to}
+                  <a
+                    key={n.label}
+                    href={n.to}
                     className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
                       active
                         ? "bg-gradient-primary text-white shadow-glow"
@@ -44,7 +44,7 @@ export function DashboardShell({ crumb, children }: { crumb: string; children: R
                   >
                     <n.icon className="h-4 w-4" />
                     {n.label}
-                  </Link>
+                  </a>
                 );
               })}
             </nav>
@@ -52,16 +52,16 @@ export function DashboardShell({ crumb, children }: { crumb: string; children: R
               {FOOT.map((n) => {
                 const active = path === n.to;
                 return (
-                  <Link
+                  <a
                     key={n.label}
-                    to={n.to}
+                    href={n.to}
                     className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
                       active ? "bg-accent text-accent-foreground" : "text-foreground/70 hover:bg-muted"
                     }`}
                   >
                     <n.icon className="h-4 w-4" />
                     {n.label}
-                  </Link>
+                  </a>
                 );
               })}
             </div>
