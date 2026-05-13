@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ParticipantsRouteImport } from './routes/participants'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as GroupsRouteImport } from './routes/groups'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreateRouteImport } from './routes/create'
 import { Route as IndexRouteImport } from './routes/index'
@@ -20,9 +22,19 @@ const ProfileRoute = ProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParticipantsRoute = ParticipantsRouteImport.update({
+  id: '/participants',
+  path: '/participants',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GroupsRoute = GroupsRouteImport.update({
+  id: '/groups',
+  path: '/groups',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -45,14 +57,18 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/dashboard': typeof DashboardRoute
+  '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
+  '/participants': typeof ParticipantsRoute
   '/profile': typeof ProfileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/dashboard': typeof DashboardRoute
+  '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
+  '/participants': typeof ParticipantsRoute
   '/profile': typeof ProfileRoute
 }
 export interface FileRoutesById {
@@ -60,22 +76,48 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/dashboard': typeof DashboardRoute
+  '/groups': typeof GroupsRoute
   '/login': typeof LoginRoute
+  '/participants': typeof ParticipantsRoute
   '/profile': typeof ProfileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/create' | '/dashboard' | '/login' | '/profile'
+  fullPaths:
+    | '/'
+    | '/create'
+    | '/dashboard'
+    | '/groups'
+    | '/login'
+    | '/participants'
+    | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/create' | '/dashboard' | '/login' | '/profile'
-  id: '__root__' | '/' | '/create' | '/dashboard' | '/login' | '/profile'
+  to:
+    | '/'
+    | '/create'
+    | '/dashboard'
+    | '/groups'
+    | '/login'
+    | '/participants'
+    | '/profile'
+  id:
+    | '__root__'
+    | '/'
+    | '/create'
+    | '/dashboard'
+    | '/groups'
+    | '/login'
+    | '/participants'
+    | '/profile'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreateRoute: typeof CreateRoute
   DashboardRoute: typeof DashboardRoute
+  GroupsRoute: typeof GroupsRoute
   LoginRoute: typeof LoginRoute
+  ParticipantsRoute: typeof ParticipantsRoute
   ProfileRoute: typeof ProfileRoute
 }
 
@@ -88,11 +130,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/participants': {
+      id: '/participants'
+      path: '/participants'
+      fullPath: '/participants'
+      preLoaderRoute: typeof ParticipantsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/groups': {
+      id: '/groups'
+      path: '/groups'
+      fullPath: '/groups'
+      preLoaderRoute: typeof GroupsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -123,7 +179,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreateRoute: CreateRoute,
   DashboardRoute: DashboardRoute,
+  GroupsRoute: GroupsRoute,
   LoginRoute: LoginRoute,
+  ParticipantsRoute: ParticipantsRoute,
   ProfileRoute: ProfileRoute,
 }
 export const routeTree = rootRouteImport
