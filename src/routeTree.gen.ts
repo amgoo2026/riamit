@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ParticipantsRouteImport } from './routes/participants'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as JoinRouteImport } from './routes/join'
 import { Route as GroupsRouteImport } from './routes/groups'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreateRouteImport } from './routes/create'
@@ -30,6 +31,11 @@ const ParticipantsRoute = ParticipantsRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GroupsRoute = GroupsRouteImport.update({
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/create': typeof CreateRoute
   '/dashboard': typeof DashboardRoute
   '/groups': typeof GroupsRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/participants': typeof ParticipantsRoute
   '/profile': typeof ProfileRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/create': typeof CreateRoute
   '/dashboard': typeof DashboardRoute
   '/groups': typeof GroupsRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/participants': typeof ParticipantsRoute
   '/profile': typeof ProfileRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/create': typeof CreateRoute
   '/dashboard': typeof DashboardRoute
   '/groups': typeof GroupsRoute
+  '/join': typeof JoinRoute
   '/login': typeof LoginRoute
   '/participants': typeof ParticipantsRoute
   '/profile': typeof ProfileRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/dashboard'
     | '/groups'
+    | '/join'
     | '/login'
     | '/participants'
     | '/profile'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/dashboard'
     | '/groups'
+    | '/join'
     | '/login'
     | '/participants'
     | '/profile'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/dashboard'
     | '/groups'
+    | '/join'
     | '/login'
     | '/participants'
     | '/profile'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   CreateRoute: typeof CreateRoute
   DashboardRoute: typeof DashboardRoute
   GroupsRoute: typeof GroupsRoute
+  JoinRoute: typeof JoinRoute
   LoginRoute: typeof LoginRoute
   ParticipantsRoute: typeof ParticipantsRoute
   ProfileRoute: typeof ProfileRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/groups': {
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   CreateRoute: CreateRoute,
   DashboardRoute: DashboardRoute,
   GroupsRoute: GroupsRoute,
+  JoinRoute: JoinRoute,
   LoginRoute: LoginRoute,
   ParticipantsRoute: ParticipantsRoute,
   ProfileRoute: ProfileRoute,
