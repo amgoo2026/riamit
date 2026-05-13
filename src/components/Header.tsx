@@ -38,12 +38,12 @@ export function Header({ floating = false }: { floating?: boolean }) {
               );
             })}
           </nav>
-          <button className="group flex items-center gap-2 rounded-full bg-white pl-5 pr-1.5 py-1.5 text-sm font-medium text-foreground shadow-sm">
+          <Link to="/login" className="group flex items-center gap-2 rounded-full bg-white pl-5 pr-1.5 py-1.5 text-sm font-medium text-foreground shadow-sm">
             Login
             <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-primary text-white transition-transform group-hover:translate-x-0.5">
               <ArrowRight className="h-3.5 w-3.5" />
             </span>
-          </button>
+          </Link>
         </div>
       </div>
     </header>
