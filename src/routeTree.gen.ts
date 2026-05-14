@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ParticipantsRouteImport } from './routes/participants'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as LobbyRouteImport } from './routes/lobby'
 import { Route as JoinRouteImport } from './routes/join'
 import { Route as GroupsRouteImport } from './routes/groups'
+import { Route as GameRouteImport } from './routes/game'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreateRouteImport } from './routes/create'
 import { Route as IndexRouteImport } from './routes/index'
@@ -33,6 +35,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LobbyRoute = LobbyRouteImport.update({
+  id: '/lobby',
+  path: '/lobby',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JoinRoute = JoinRouteImport.update({
   id: '/join',
   path: '/join',
@@ -41,6 +48,11 @@ const JoinRoute = JoinRouteImport.update({
 const GroupsRoute = GroupsRouteImport.update({
   id: '/groups',
   path: '/groups',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GameRoute = GameRouteImport.update({
+  id: '/game',
+  path: '/game',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -63,8 +75,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/dashboard': typeof DashboardRoute
+  '/game': typeof GameRoute
   '/groups': typeof GroupsRoute
   '/join': typeof JoinRoute
+  '/lobby': typeof LobbyRoute
   '/login': typeof LoginRoute
   '/participants': typeof ParticipantsRoute
   '/profile': typeof ProfileRoute
@@ -73,8 +87,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/dashboard': typeof DashboardRoute
+  '/game': typeof GameRoute
   '/groups': typeof GroupsRoute
   '/join': typeof JoinRoute
+  '/lobby': typeof LobbyRoute
   '/login': typeof LoginRoute
   '/participants': typeof ParticipantsRoute
   '/profile': typeof ProfileRoute
@@ -84,8 +100,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/dashboard': typeof DashboardRoute
+  '/game': typeof GameRoute
   '/groups': typeof GroupsRoute
   '/join': typeof JoinRoute
+  '/lobby': typeof LobbyRoute
   '/login': typeof LoginRoute
   '/participants': typeof ParticipantsRoute
   '/profile': typeof ProfileRoute
@@ -96,8 +114,10 @@ export interface FileRouteTypes {
     | '/'
     | '/create'
     | '/dashboard'
+    | '/game'
     | '/groups'
     | '/join'
+    | '/lobby'
     | '/login'
     | '/participants'
     | '/profile'
@@ -106,8 +126,10 @@ export interface FileRouteTypes {
     | '/'
     | '/create'
     | '/dashboard'
+    | '/game'
     | '/groups'
     | '/join'
+    | '/lobby'
     | '/login'
     | '/participants'
     | '/profile'
@@ -116,8 +138,10 @@ export interface FileRouteTypes {
     | '/'
     | '/create'
     | '/dashboard'
+    | '/game'
     | '/groups'
     | '/join'
+    | '/lobby'
     | '/login'
     | '/participants'
     | '/profile'
@@ -127,8 +151,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreateRoute: typeof CreateRoute
   DashboardRoute: typeof DashboardRoute
+  GameRoute: typeof GameRoute
   GroupsRoute: typeof GroupsRoute
   JoinRoute: typeof JoinRoute
+  LobbyRoute: typeof LobbyRoute
   LoginRoute: typeof LoginRoute
   ParticipantsRoute: typeof ParticipantsRoute
   ProfileRoute: typeof ProfileRoute
@@ -157,6 +183,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lobby': {
+      id: '/lobby'
+      path: '/lobby'
+      fullPath: '/lobby'
+      preLoaderRoute: typeof LobbyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/join': {
       id: '/join'
       path: '/join'
@@ -169,6 +202,13 @@ declare module '@tanstack/react-router' {
       path: '/groups'
       fullPath: '/groups'
       preLoaderRoute: typeof GroupsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game': {
+      id: '/game'
+      path: '/game'
+      fullPath: '/game'
+      preLoaderRoute: typeof GameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -199,8 +239,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreateRoute: CreateRoute,
   DashboardRoute: DashboardRoute,
+  GameRoute: GameRoute,
   GroupsRoute: GroupsRoute,
   JoinRoute: JoinRoute,
+  LobbyRoute: LobbyRoute,
   LoginRoute: LoginRoute,
   ParticipantsRoute: ParticipantsRoute,
   ProfileRoute: ProfileRoute,
