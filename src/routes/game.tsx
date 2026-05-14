@@ -41,6 +41,7 @@ function GamePage() {
   const [secsHdr, setSecsHdr] = useState(24 * 60 + 58);
   const [secsCase, setSecsCase] = useState(4 * 60 + 58);
   const [openPerson, setOpenPerson] = useState<number | null>(null);
+  const [secretOpened, setSecretOpened] = useState(false);
   const [openPhotos, setOpenPhotos] = useState(false);
 
   useEffect(() => {
