@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { ArrowRight, ArrowLeft, User, Mail, Calendar, Clock, Lock, ShieldCheck } from "lucide-react";
 import { Logo } from "@/components/Logo";
@@ -191,8 +191,15 @@ function DoneStep({ name }: { name: string }) {
         </div>
         <h2 className="mt-5 text-2xl font-bold">Welcome{ name ? `, ${name.split(" ")[0]}` : "" }!</h2>
         <p className="mt-2 text-sm text-white/70 max-w-xs mx-auto">
-          You're verified and assigned to your group. Sit tight — the mystery begins at 11:00 AM IST.
+          You're verified and assigned to your group. Sit tight — the mystery begins shortly.
         </p>
+        <Link
+          to="/lobby"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-primary text-white pl-5 pr-1.5 py-2 text-sm font-medium shadow-glow"
+        >
+          Enter Lobby
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-white/20"><ArrowRight className="h-4 w-4" /></span>
+        </Link>
       </div>
     </div>
   );
