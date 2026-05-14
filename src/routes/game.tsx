@@ -171,7 +171,7 @@ function GamePage() {
               <div className="mx-auto mt-3 h-32 w-32 rounded-2xl bg-gradient-to-br from-purple-700 via-purple-900 to-indigo-950 grid place-items-center ring-2 ring-amber-400/40 shadow-elevated">
                 <span className="text-5xl font-black text-amber-300">?</span>
               </div>
-              <button className="mt-4 w-full rounded-full bg-gradient-primary py-2.5 text-sm font-semibold shadow-glow">Open Secret Box</button>
+              <button onClick={() => setOpenPerson(PEOPLE.findIndex(p => p.name === "(You)"))} className="mt-4 w-full rounded-full bg-gradient-primary py-2.5 text-sm font-semibold shadow-glow">Open Secret Box</button>
             </div>
             <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur p-5 text-center flex flex-col">
               <p className="text-xs text-white/80">You can view the case summary only once. Remember the details!</p>
