@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FileText, Lightbulb, Gamepad2, Camera, X, MapPin, Calendar, Cloud, Video,
   ZoomIn, ShieldCheck, Eye, AlertCircle, Send, Clock, UserX, ScanSearch,
-  ThumbsUp, ThumbsDown, Minus,
+  ThumbsUp, ThumbsDown,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import mystery from "@/assets/mystery.jpg";
