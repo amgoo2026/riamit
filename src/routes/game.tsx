@@ -115,6 +115,7 @@ function GamePage() {
           sendQuestion={sendQuestion}
           activity={activity}
           openModal={setModal}
+          locked={modal === "answer"}
         />
       )}
 
