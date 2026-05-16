@@ -261,8 +261,9 @@ function InvestigationView(props: {
   questionsLeft: number; selectedAskee: number; setSelectedAskee: (i: number) => void;
   question: string; setQuestion: (s: string) => void; sendQuestion: () => void;
   activity: { to: string; q: string; a?: string }[]; openModal: (m: ModalKey) => void;
+  locked?: boolean;
 }) {
-  const { questionsLeft, selectedAskee, setSelectedAskee, question, setQuestion, sendQuestion, activity, openModal } = props;
+  const { questionsLeft, selectedAskee, setSelectedAskee, question, setQuestion, sendQuestion, activity, openModal, locked = false } = props;
   const [invSecs, setInvSecs] = useState(18 * 60 + 42);
   useEffect(() => { const t = setInterval(() => setInvSecs((s) => Math.max(0, s - 1)), 1000); return () => clearInterval(t); }, []);
   const fmt = (s: number) => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
