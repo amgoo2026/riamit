@@ -336,30 +336,37 @@ function InvestigationView(props: {
         <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
           <h3 className="text-lg font-bold">Ask a Question</h3>
           <p className="text-xs text-white/70">Select a player to ask a question</p>
-          <div className="mt-4 grid grid-cols-5 gap-2">
-            {PEOPLE.map((p, i) => (
-              <button key={p.short} onClick={() => setSelectedAskee(i)} className={`relative rounded-xl border p-2 text-center transition ${i === selectedAskee ? "border-purple-400 ring-2 ring-purple-400/40 bg-purple-500/10" : "border-white/10 bg-white/5 hover:bg-white/10"}`}>
-                <div className={`mx-auto h-14 w-14 rounded-full bg-gradient-to-br ${p.grad} grid place-items-center`}>
-                  <Eye className="h-5 w-5 text-white/80" />
-                </div>
-                <div className="mt-1.5 text-[11px] font-semibold">{p.short}</div>
-                {i === selectedAskee && <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-4 w-4 rounded-full bg-purple-500 ring-2 ring-purple-300" />}
-              </button>
-            ))}
-          </div>
-          <div className="mt-6">
-            <label className="text-xs text-white/70">Type your question (max 120 characters)</label>
-            <div className="mt-1 relative">
-              <textarea value={question} onChange={(e) => setQuestion(e.target.value.slice(0, 120))}
-                placeholder="Type your question here..."
-                className="w-full h-28 rounded-xl bg-black/30 border border-white/10 p-3 text-sm placeholder:text-white/40 focus:outline-none focus:border-purple-400" />
-              <span className="absolute bottom-2 right-3 text-[10px] text-white/50">{question.length}/120</span>
+          {locked && (
+            <div className="mt-3 rounded-lg border border-amber-400/40 bg-amber-500/10 px-3 py-2 text-[11px] text-amber-200 flex items-center gap-2">
+              <Clock className="h-3.5 w-3.5" /> Waiting for answer — input locked while the timer runs.
             </div>
-          </div>
-          <button onClick={sendQuestion} disabled={!question.trim()}
-            className="mt-5 w-full rounded-full bg-gradient-primary py-3 text-sm font-semibold shadow-glow disabled:opacity-40">
-            <Send className="h-4 w-4 inline mr-2" /> Send Question
-          </button>
+          )}
+          <fieldset disabled={locked} aria-busy={locked} className={locked ? "opacity-60 pointer-events-none select-none" : ""}>
+            <div className="mt-4 grid grid-cols-5 gap-2">
+              {PEOPLE.map((p, i) => (
+                <button type="button" key={p.short} onClick={() => setSelectedAskee(i)} className={`relative rounded-xl border p-2 text-center transition ${i === selectedAskee ? "border-purple-400 ring-2 ring-purple-400/40 bg-purple-500/10" : "border-white/10 bg-white/5 hover:bg-white/10"}`}>
+                  <div className={`mx-auto h-14 w-14 rounded-full bg-gradient-to-br ${p.grad} grid place-items-center`}>
+                    <Eye className="h-5 w-5 text-white/80" />
+                  </div>
+                  <div className="mt-1.5 text-[11px] font-semibold">{p.short}</div>
+                  {i === selectedAskee && <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 h-4 w-4 rounded-full bg-purple-500 ring-2 ring-purple-300" />}
+                </button>
+              ))}
+            </div>
+            <div className="mt-6">
+              <label className="text-xs text-white/70">Type your question (max 120 characters)</label>
+              <div className="mt-1 relative">
+                <textarea value={question} onChange={(e) => setQuestion(e.target.value.slice(0, 120))}
+                  placeholder="Type your question here..."
+                  className="w-full h-28 rounded-xl bg-black/30 border border-white/10 p-3 text-sm placeholder:text-white/40 focus:outline-none focus:border-purple-400 disabled:cursor-not-allowed" />
+                <span className="absolute bottom-2 right-3 text-[10px] text-white/50">{question.length}/120</span>
+              </div>
+            </div>
+            <button type="button" onClick={sendQuestion} disabled={!question.trim() || questionsLeft <= 0 || locked}
+              className="mt-5 w-full rounded-full bg-gradient-primary py-3 text-sm font-semibold shadow-glow disabled:opacity-40 disabled:cursor-not-allowed">
+              <Send className="h-4 w-4 inline mr-2" /> Send Question
+            </button>
+          </fieldset>
           <p className="mt-2 text-center text-[11px] text-white/60">All answers are visible to everyone after the player submits.</p>
         </div>
 
