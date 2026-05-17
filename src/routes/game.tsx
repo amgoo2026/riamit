@@ -96,6 +96,17 @@ function GamePage() {
         </div>
       </header>
 
+      <div className="mt-4">
+        <Crumbs
+          tone="dark"
+          items={[
+            { label: "Home", to: "/" },
+            { label: "Lobby", to: "/lobby" },
+            { label: phase === "summary" ? "Case Summary" : "Investigation" },
+          ]}
+        />
+      </div>
+
       {phase === "summary" ? (
         <SummaryView
           fmt={fmt}
