@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Header } from "@/components/Header";
+import { Crumbs } from "@/components/Crumbs";
 import { Footer } from "@/components/Footer";
 import { PillButton } from "@/components/PillButton";
 import { Check, Mail, User, Calendar, Clock, Copy, MessageCircle, Share2, CheckCircle2, X } from "lucide-react";
