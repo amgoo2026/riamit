@@ -5,6 +5,7 @@ import {
   Users, Gamepad2, Info, LogOut, User as UserIcon,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { Crumbs } from "@/components/Crumbs";
 import mystery from "@/assets/mystery.jpg";
 
 export const Route = createFileRoute("/lobby")({
