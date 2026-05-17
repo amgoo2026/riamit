@@ -27,7 +27,19 @@ function ResultsPage() {
         </div>
       </header>
 
-      <div className="mt-6 rounded-2xl border border-white/10 bg-gradient-to-r from-purple-900/40 to-indigo-900/40 px-5 py-4 flex items-center gap-3">
+      <div className="mt-4">
+        <Crumbs
+          tone="dark"
+          items={[
+            { label: "Home", to: "/" },
+            { label: "Lobby", to: "/lobby" },
+            { label: "Game", to: "/game" },
+            { label: "Results" },
+          ]}
+        />
+      </div>
+
+      <div className="mt-4 rounded-2xl border border-white/10 bg-gradient-to-r from-purple-900/40 to-indigo-900/40 px-5 py-4 flex items-center gap-3">
         <div className="h-11 w-11 rounded-2xl bg-purple-500/30 grid place-items-center"><FileText className="h-5 w-5 text-purple-200" /></div>
         <h1 className="text-xl font-bold tracking-wide">Results & Role Revealed</h1>
       </div>
