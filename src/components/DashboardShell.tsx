@@ -2,6 +2,16 @@ import { useRouterState, Link } from "@tanstack/react-router";
 import { LayoutGrid, Users, Layers, Trophy, Settings, Minimize2, Maximize2, Bell, ChevronDown, User } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Logo } from "./Logo";
+import { Crumbs } from "./Crumbs";
+
+const CRUMB_LINKS: Record<string, string> = {
+  "Organizer Dashboard": "/dashboard",
+  Dashboard: "/dashboard",
+  Participants: "/participants",
+  Groups: "/groups",
+  Profile: "/profile",
+  "Edit Profile": "/profile",
+};
 
 const NAV = [
   { label: "Dashboard", to: "/dashboard", icon: LayoutGrid },
