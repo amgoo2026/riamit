@@ -22,9 +22,14 @@ function JoinPage() {
       <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-fuchsia-500/20 blur-3xl" />
 
       <header className="relative px-6 py-5 max-w-7xl mx-auto flex items-center justify-between">
-        <div className="text-xs uppercase tracking-[0.2em] text-white/60">
-          Participant Login / Mystery Quest / {step === "form" ? "1" : "2"}
-        </div>
+        <Crumbs
+          tone="dark"
+          items={[
+            { label: "Home", to: "/" },
+            { label: "Participant Login" },
+            { label: step === "form" ? "Details" : step === "otp" ? "Verify OTP" : "Verified" },
+          ]}
+        />
         <Logo />
       </header>
 
