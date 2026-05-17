@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { ArrowRight, Mail } from "lucide-react";
 import { Header } from "@/components/Header";
+import { Crumbs } from "@/components/Crumbs";
 import { Footer } from "@/components/Footer";
 import hero from "@/assets/hero.jpg";
 
