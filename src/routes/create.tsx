@@ -46,6 +46,9 @@ function CreatePage() {
   return (
     <div className="min-h-screen pb-10">
       <div className="pt-6"><Header /></div>
+      <div className="mx-auto max-w-6xl px-4 mt-4">
+        <Crumbs items={[{ label: "Home", to: "/" }, { label: "Create Session" }]} />
+      </div>
 
       <section className="px-4 mt-12">
         <div className="mx-auto max-w-6xl text-center">
