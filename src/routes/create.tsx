@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Header } from "@/components/Header";
+import { Crumbs } from "@/components/Crumbs";
 import { Footer } from "@/components/Footer";
 import { PillButton } from "@/components/PillButton";
 import { Check, Mail, User, Calendar, Clock, Copy, MessageCircle, Share2, CheckCircle2, X } from "lucide-react";
@@ -45,6 +46,9 @@ function CreatePage() {
   return (
     <div className="min-h-screen pb-10">
       <div className="pt-6"><Header /></div>
+      <div className="mx-auto max-w-6xl px-4 mt-4">
+        <Crumbs items={[{ label: "Home", to: "/" }, { label: "Create Session" }]} />
+      </div>
 
       <section className="px-4 mt-12">
         <div className="mx-auto max-w-6xl text-center">

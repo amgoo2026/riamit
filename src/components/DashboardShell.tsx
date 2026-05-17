@@ -2,6 +2,16 @@ import { useRouterState, Link } from "@tanstack/react-router";
 import { LayoutGrid, Users, Layers, Trophy, Settings, Minimize2, Maximize2, Bell, ChevronDown, User } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Logo } from "./Logo";
+import { Crumbs } from "./Crumbs";
+
+const CRUMB_LINKS: Record<string, string> = {
+  "Organizer Dashboard": "/dashboard",
+  Dashboard: "/dashboard",
+  Participants: "/participants",
+  Groups: "/groups",
+  Profile: "/profile",
+  "Edit Profile": "/profile",
+};
 
 const NAV = [
   { label: "Dashboard", to: "/dashboard", icon: LayoutGrid },
@@ -59,7 +69,15 @@ export function DashboardShell({ crumb, children }: { crumb: string; children: R
 
   return (
     <div className="min-h-screen bg-[oklch(0.965_0.012_290)]">
-      <div className="px-6 pt-5 text-xs text-muted-foreground">{crumb}</div>
+      <div className="px-6 pt-5">
+        <Crumbs
+          items={crumb.split("/").map((s, i, arr) => {
+            const label = s.trim();
+            const to = CRUMB_LINKS[label];
+            return { label, to: i === arr.length - 1 ? undefined : to };
+          })}
+        />
+      </div>
 
       <div className="px-4 pb-10 pt-3">
         <div className="mx-auto flex max-w-[1280px] gap-5">

@@ -5,6 +5,7 @@ import {
   Users, Gamepad2, Info, LogOut, User as UserIcon,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { Crumbs } from "@/components/Crumbs";
 import mystery from "@/assets/mystery.jpg";
 
 export const Route = createFileRoute("/lobby")({
@@ -45,7 +46,18 @@ function LobbyPage() {
         </div>
       </header>
 
-      <main className="mt-5 grid gap-5 lg:grid-cols-[1fr_2fr_1.1fr]">
+      <div className="mt-4">
+        <Crumbs
+          tone="dark"
+          items={[
+            { label: "Home", to: "/" },
+            { label: "Join", to: "/join" },
+            { label: "Lobby" },
+          ]}
+        />
+      </div>
+
+      <main className="mt-4 grid gap-5 lg:grid-cols-[1fr_2fr_1.1fr]">
         {/* Logo card */}
         <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur p-8 grid place-items-center min-h-[360px]">
           <div className="text-center">

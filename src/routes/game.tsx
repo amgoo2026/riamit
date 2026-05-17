@@ -6,6 +6,7 @@ import {
   ThumbsUp, ThumbsDown,
 } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { Crumbs } from "@/components/Crumbs";
 import mystery from "@/assets/mystery.jpg";
 
 export const Route = createFileRoute("/game")({
@@ -94,6 +95,17 @@ function GamePage() {
           </div>
         </div>
       </header>
+
+      <div className="mt-4">
+        <Crumbs
+          tone="dark"
+          items={[
+            { label: "Home", to: "/" },
+            { label: "Lobby", to: "/lobby" },
+            { label: phase === "summary" ? "Case Summary" : "Investigation" },
+          ]}
+        />
+      </div>
 
       {phase === "summary" ? (
         <SummaryView

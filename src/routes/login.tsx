@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { ArrowRight, Mail } from "lucide-react";
 import { Header } from "@/components/Header";
+import { Crumbs } from "@/components/Crumbs";
 import { Footer } from "@/components/Footer";
 import hero from "@/assets/hero.jpg";
 
@@ -20,7 +21,10 @@ function LoginPage() {
       <div className="pt-4">
         <Header />
       </div>
-      <main className="flex-1 px-4 py-10">
+      <div className="mx-auto max-w-6xl px-4 pt-4">
+        <Crumbs items={[{ label: "Home", to: "/" }, { label: "Login" }]} />
+      </div>
+      <main className="flex-1 px-4 py-6">
         <div className="mx-auto max-w-6xl grid gap-6 lg:grid-cols-2 rounded-3xl overflow-hidden bg-white shadow-card">
           <img src={hero} alt="Team" className="h-full w-full object-cover min-h-[420px]" />
           <div className="p-8 sm:p-12 flex flex-col justify-center">
