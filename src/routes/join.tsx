@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useRef, useEffect } from "react";
 import { ArrowRight, ArrowLeft, User, Mail, Calendar, Clock, Lock, ShieldCheck } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { Crumbs } from "@/components/Crumbs";
 import mystery from "@/assets/mystery.jpg";
 
 export const Route = createFileRoute("/join")({
