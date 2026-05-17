@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FileText, Trophy, Star } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { Crumbs } from "@/components/Crumbs";
 
 export const Route = createFileRoute("/results")({
   head: () => ({ meta: [{ title: "Mystery Quest — Results" }] }),
