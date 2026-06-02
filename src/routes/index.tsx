@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Users, HandHeart, Target, Zap, MonitorPlay, ShieldCheck,
