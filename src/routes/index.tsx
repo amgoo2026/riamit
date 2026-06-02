@@ -103,8 +103,31 @@ function Home() {
             <p className="mt-3 text-muted-foreground">Designed to engage people, spark thinking, and create memorable moments.</p>
           </div>
           <div className="mt-10 grid md:grid-cols-2 gap-6">
-            <ActivityCard image={mystery} name="Mystery Quest" desc="A story-driven team challenge where employees collaborate, question, and compete to solve the case." />
-            <ActivityCard image={cook} name="Cook & Create" desc="Hands-on culinary teamwork that builds collaboration through creativity, coordination, and fun." accent="warm" />
+            <ActivityCard
+              image={mystery}
+              name="Mystery Quest"
+              desc="A story-driven team challenge where employees collaborate, question, and compete to solve the case."
+              bullets={[
+                "Role-based activity (Investigator, Culprit, Witness, and more)",
+                "Real-time questioning and deduction",
+                "Time-bound challenges to maintain urgency",
+                "Built for communication and strategic thinking",
+              ]}
+              footer="Builds stronger communication, sharper thinking, and real team collaboration in a high-energy environment."
+            />
+            <ActivityCard
+              image={cook}
+              name="Cook & Create"
+              desc="A fast-paced creative challenge where teams collaborate to build something unique under constraints."
+              bullets={[
+                "Secret ingredient-based activity",
+                "Step-by-step collaborative creation",
+                "Limited actions per player for balanced participation",
+                "Fun, unpredictable, and creative outcomes",
+              ]}
+              footer="Encourages creativity, quick thinking, and seamless team coordination in a playful setting."
+              accent="warm"
+            />
           </div>
         </div>
       </section>
@@ -186,16 +209,43 @@ function Home() {
   );
 }
 
-function ActivityCard({ image, name, desc, accent = "purple" }: { image: string; name: string; desc: string; accent?: "purple" | "warm" }) {
+function ActivityCard({
+  image,
+  name,
+  desc,
+  bullets = [],
+  footer,
+  accent = "purple",
+}: {
+  image: string;
+  name: string;
+  desc: string;
+  bullets?: string[];
+  footer?: string;
+  accent?: "purple" | "warm";
+}) {
   return (
-    <div className="relative overflow-hidden rounded-2xl min-h-[280px] shadow-elevated group">
+    <div className="relative overflow-hidden rounded-3xl min-h-[460px] shadow-elevated group">
       <img src={image} alt={name} width={1024} height={768} loading="lazy" className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-700" />
-      <div className={`absolute inset-0 ${accent === "warm" ? "bg-gradient-to-t from-game-brown/90 via-game-brown/50 to-transparent" : "bg-gradient-to-t from-purple-900/90 via-purple-900/50 to-transparent"}`} />
-      <div className="relative h-full flex flex-col justify-end p-7 text-white">
-        <h3 className="text-2xl font-bold">{name}</h3>
-        <p className="mt-2 text-sm text-white/85 max-w-md">{desc}</p>
-        <div className="mt-5">
-          <button className="rounded-full bg-white/15 backdrop-blur border border-white/30 px-5 py-2 text-sm hover:bg-white hover:text-foreground transition">Explore Activity</button>
+      <div className={`absolute inset-0 ${accent === "warm" ? "bg-gradient-to-r from-game-brown/85 via-game-brown/55 to-game-brown/30" : "bg-gradient-to-r from-purple-950/90 via-purple-900/65 to-purple-900/35"}`} />
+      <div className="relative h-full flex flex-col md:flex-row gap-5 p-7 text-white">
+        <div className="md:w-1/3 flex md:block justify-center shrink-0">
+          <div className="h-28 w-28 md:h-36 md:w-36 rounded-2xl bg-white/10 backdrop-blur grid place-items-center p-3">
+            <span className="text-center text-xs font-bold uppercase tracking-wider opacity-90">{name}</span>
+          </div>
+        </div>
+        <div className="flex-1 flex flex-col">
+          <h3 className="text-3xl font-bold">{name}</h3>
+          <p className="mt-3 text-sm text-white/85">{desc}</p>
+          {bullets.length > 0 && (
+            <ul className="mt-4 space-y-1.5 text-sm text-white/90 list-disc pl-5 marker:text-white/70">
+              {bullets.map((b) => <li key={b}>{b}</li>)}
+            </ul>
+          )}
+          {footer && <p className="mt-4 text-sm text-white/80">{footer}</p>}
+          <div className="mt-6">
+            <button className="rounded-full bg-white/10 backdrop-blur border border-white/40 px-6 py-2.5 text-sm hover:bg-white hover:text-foreground transition">Explore Activity</button>
+          </div>
         </div>
       </div>
     </div>
