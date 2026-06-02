@@ -152,6 +152,19 @@ function Home() {
         </div>
       </section>
 
+      {/* COST PER EMPLOYEE */}
+      <section id="cost" className="px-4 mt-24">
+        <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-6 items-stretch">
+          <div className="rounded-[2rem] bg-card p-10 md:p-12 shadow-card flex flex-col justify-center">
+            <h2 className="text-4xl md:text-5xl font-bold leading-tight">See your cost<br />per Employee</h2>
+            <p className="mt-5 text-muted-foreground max-w-md">
+              Estimate your cost instantly and plan your team engagement session.
+            </p>
+          </div>
+          <CostCalculator />
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="px-4 mt-20">
         <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] min-h-[340px] grid place-items-center text-center px-6">
