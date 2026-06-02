@@ -82,13 +82,13 @@ function Home() {
           {FEATURES.map((f) => (
             <div
               key={f.title}
-              className={`rounded-2xl p-7 text-center shadow-card ${f.featured ? "bg-gradient-primary text-white" : "bg-card"}`}
+              className={`group rounded-2xl p-7 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-elevated ${f.featured ? "bg-gradient-primary text-white" : "bg-card hover:bg-gradient-primary hover:text-white"}`}
             >
-              <div className={`mx-auto h-14 w-14 rounded-full grid place-items-center ${f.featured ? "bg-white/20" : f.bg}`}>
-                <f.icon className={`h-6 w-6 ${f.featured ? "text-white" : f.color}`} />
+              <div className={`mx-auto h-14 w-14 rounded-full grid place-items-center transition-colors duration-300 ${f.featured ? "bg-white/20" : `${f.bg} group-hover:bg-white/20`}`}>
+                <f.icon className={`h-6 w-6 transition-colors duration-300 ${f.featured ? "text-white" : `${f.color} group-hover:text-white`}`} />
               </div>
               <h3 className={`mt-5 font-semibold text-lg ${f.featured ? "text-white" : ""}`}>{f.title}</h3>
-              <p className={`mt-3 text-sm leading-relaxed ${f.featured ? "text-white/85" : "text-muted-foreground"}`}>{f.desc}</p>
+              <p className={`mt-3 text-sm leading-relaxed transition-colors duration-300 ${f.featured ? "text-white/85" : "text-muted-foreground group-hover:text-white/85"}`}>{f.desc}</p>
             </div>
           ))}
         </div>
