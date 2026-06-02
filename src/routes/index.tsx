@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Users, HandHeart, Target, Zap, MonitorPlay, ShieldCheck,
@@ -82,13 +83,13 @@ function Home() {
           {FEATURES.map((f) => (
             <div
               key={f.title}
-              className={`rounded-2xl p-7 text-center shadow-card ${f.featured ? "bg-gradient-primary text-white" : "bg-card"}`}
+              className={`group rounded-2xl p-7 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-elevated ${f.featured ? "bg-gradient-primary text-white" : "bg-card hover:bg-gradient-primary hover:text-white"}`}
             >
-              <div className={`mx-auto h-14 w-14 rounded-full grid place-items-center ${f.featured ? "bg-white/20" : f.bg}`}>
-                <f.icon className={`h-6 w-6 ${f.featured ? "text-white" : f.color}`} />
+              <div className={`mx-auto h-14 w-14 rounded-full grid place-items-center transition-colors duration-300 ${f.featured ? "bg-white/20" : `${f.bg} group-hover:bg-white/20`}`}>
+                <f.icon className={`h-6 w-6 transition-colors duration-300 ${f.featured ? "text-white" : `${f.color} group-hover:text-white`}`} />
               </div>
               <h3 className={`mt-5 font-semibold text-lg ${f.featured ? "text-white" : ""}`}>{f.title}</h3>
-              <p className={`mt-3 text-sm leading-relaxed ${f.featured ? "text-white/85" : "text-muted-foreground"}`}>{f.desc}</p>
+              <p className={`mt-3 text-sm leading-relaxed transition-colors duration-300 ${f.featured ? "text-white/85" : "text-muted-foreground group-hover:text-white/85"}`}>{f.desc}</p>
             </div>
           ))}
         </div>
@@ -151,6 +152,19 @@ function Home() {
         </div>
       </section>
 
+      {/* COST PER EMPLOYEE */}
+      <section id="cost" className="px-4 mt-24">
+        <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-6 items-stretch">
+          <div className="rounded-[2rem] bg-card p-10 md:p-12 shadow-card flex flex-col justify-center">
+            <h2 className="text-4xl md:text-5xl font-bold leading-tight">See your cost<br />per Employee</h2>
+            <p className="mt-5 text-muted-foreground max-w-md">
+              Estimate your cost instantly and plan your team engagement session.
+            </p>
+          </div>
+          <CostCalculator />
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="px-4 mt-20">
         <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] min-h-[340px] grid place-items-center text-center px-6">
@@ -191,33 +205,98 @@ function ActivityCard({ image, name, desc, accent = "purple" }: { image: string;
 function PriceCard({ plan }: { plan: typeof PLANS[number] }) {
   const popular = plan.popular;
   return (
-    <div className={`relative rounded-2xl p-7 shadow-card ${popular ? "bg-gradient-primary text-white" : "bg-card"}`}>
+    <div className={`group relative rounded-2xl p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-elevated ${popular ? "bg-gradient-primary text-white" : "bg-card hover:bg-gradient-primary hover:text-white"}`}>
       {popular && (
         <div className="absolute -top-3 right-6 inline-flex items-center gap-1 rounded-full bg-warning text-foreground text-[10px] font-semibold uppercase tracking-wider px-3 py-1">
           <Crown className="h-3 w-3" /> Best Popular
         </div>
       )}
       <h3 className={`font-semibold text-lg ${popular ? "text-white" : ""}`}>{plan.name}</h3>
-      <p className={`mt-1 text-xs ${popular ? "text-white/75" : "text-muted-foreground"}`}>Best for: {plan.best}</p>
+      <p className={`mt-1 text-xs transition-colors duration-300 ${popular ? "text-white/75" : "text-muted-foreground group-hover:text-white/75"}`}>Best for: {plan.best}</p>
       <div className="mt-5 flex items-baseline gap-2">
         <span className="text-3xl font-bold">{plan.price}</span>
-        <span className={`text-xs ${popular ? "text-white/75" : "text-muted-foreground"}`}>One Time Payment</span>
+        <span className={`text-xs transition-colors duration-300 ${popular ? "text-white/75" : "text-muted-foreground group-hover:text-white/75"}`}>One Time Payment</span>
       </div>
-      <div className={`mt-5 pt-5 border-t ${popular ? "border-white/20" : "border-border"}`}>
-        <p className={`text-xs font-semibold mb-3 ${popular ? "text-white/85" : ""}`}>This plan includes:</p>
+      <div className={`mt-5 pt-5 border-t transition-colors duration-300 ${popular ? "border-white/20" : "border-border group-hover:border-white/20"}`}>
+        <p className={`text-xs font-semibold mb-3 ${popular ? "text-white/85" : "group-hover:text-white/85"}`}>This plan includes:</p>
         <ul className="space-y-2.5">
           {plan.includes.map((inc) => (
             <li key={inc} className="flex items-start gap-2 text-sm">
-              <Check className={`h-4 w-4 mt-0.5 shrink-0 ${popular ? "text-white" : "text-success"}`} />
-              <span className={popular ? "text-white/90" : "text-foreground/80"}>{inc}</span>
+              <Check className={`h-4 w-4 mt-0.5 shrink-0 transition-colors duration-300 ${popular ? "text-white" : "text-success group-hover:text-white"}`} />
+              <span className={`transition-colors duration-300 ${popular ? "text-white/90" : "text-foreground/80 group-hover:text-white/90"}`}>{inc}</span>
             </li>
           ))}
         </ul>
       </div>
-      <button className={`mt-6 w-full inline-flex items-center justify-between rounded-full pl-5 pr-1.5 py-1.5 text-sm font-medium ${popular ? "bg-white text-primary" : "bg-gradient-primary text-white"}`}>
+      <button className={`mt-6 w-full inline-flex items-center justify-between rounded-full pl-5 pr-1.5 py-1.5 text-sm font-medium transition-colors duration-300 ${popular ? "bg-white text-primary" : "bg-gradient-primary text-white group-hover:bg-white group-hover:text-primary"}`}>
         Pay &amp; Activate
-        <span className={`grid h-8 w-8 place-items-center rounded-full ${popular ? "bg-gradient-primary text-white" : "bg-white/20"}`}>→</span>
+        <span className={`grid h-8 w-8 place-items-center rounded-full transition-colors duration-300 ${popular ? "bg-gradient-primary text-white" : "bg-white/20 group-hover:bg-gradient-primary group-hover:text-white"}`}>→</span>
       </button>
+    </div>
+  );
+}
+
+const COST_TIERS = [
+  { cap: 5, price: 499, groups: 1, name: "Trial Pack" },
+  { cap: 50, price: 2999, groups: 10, name: "Starter Pack" },
+  { cap: 100, price: 4999, groups: 20, name: "Growth Pack" },
+  { cap: 300, price: 8999, groups: 60, name: "Business Pack" },
+  { cap: 500, price: 19999, groups: 100, name: "Enterprise Pack" },
+];
+
+function CostCalculator() {
+  const [count, setCount] = useState(100);
+  const tier = useMemo(() => COST_TIERS.find((t) => count <= t.cap) ?? COST_TIERS[COST_TIERS.length - 1], [count]);
+  const perEmployee = Math.round(tier.price / Math.max(count, 1));
+
+  return (
+    <div className="rounded-[2rem] bg-gradient-soft p-6 md:p-8 shadow-card">
+      <label className="block text-sm font-medium">How many employees are you engaging?</label>
+      <div className="mt-4 flex items-center gap-4">
+        <input
+          type="range"
+          min={1}
+          max={500}
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+          className="flex-1 accent-primary h-1.5 rounded-full"
+        />
+        <span className="text-lg font-semibold w-14 text-right">{count}</span>
+      </div>
+
+      <div className="mt-6 grid grid-cols-3 gap-3">
+        <StatCard value={`₹${perEmployee}`} label="Cost per employee" />
+        <StatCard value={`₹${tier.price.toLocaleString("en-IN")}`} label="total package cost" />
+        <StatCard value={String(tier.groups)} label="groups auto-formed" />
+      </div>
+
+      <div className="mt-4 rounded-2xl bg-card/70 p-5 text-sm">
+        <p className="font-semibold mb-2">Simple Cost Breakdown:</p>
+        <ul className="space-y-1.5 text-muted-foreground">
+          <li><span className="text-primary font-medium">Zoventro {tier.name}</span> ({count} people) = ₹{tier.price.toLocaleString("en-IN")} | ₹{perEmployee}/person</li>
+          <li><span className="text-primary font-medium">Hired facilitator</span> = ₹35,000 – ₹40,500 | no reporting</li>
+          <li><span className="text-primary font-medium">Team Lunch</span> = ₹50,000 – | forgotten by next week</li>
+        </ul>
+      </div>
+
+      <div className="mt-4 rounded-2xl bg-card/70 p-5 flex items-center gap-3">
+        <div>
+          <p className="text-xs text-muted-foreground">Recommended:</p>
+          <span className="inline-block mt-1 rounded-full bg-gradient-primary text-white text-xs font-semibold px-3 py-1">{tier.name}</span>
+        </div>
+        <p className="text-xs text-muted-foreground flex-1">
+          Zoventro is up to 5x more cost-effective than traditional team activities.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function StatCard({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-xl bg-card p-4 text-center shadow-card">
+      <div className="text-lg font-bold text-primary">{value}</div>
+      <div className="mt-1 text-[11px] text-muted-foreground leading-tight">{label}</div>
     </div>
   );
 }
