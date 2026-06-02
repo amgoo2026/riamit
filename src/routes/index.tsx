@@ -235,3 +235,68 @@ function PriceCard({ plan }: { plan: typeof PLANS[number] }) {
     </div>
   );
 }
+
+const COST_TIERS = [
+  { cap: 5, price: 499, groups: 1, name: "Trial Pack" },
+  { cap: 50, price: 2999, groups: 10, name: "Starter Pack" },
+  { cap: 100, price: 4999, groups: 20, name: "Growth Pack" },
+  { cap: 300, price: 8999, groups: 60, name: "Business Pack" },
+  { cap: 500, price: 19999, groups: 100, name: "Enterprise Pack" },
+];
+
+function CostCalculator() {
+  const [count, setCount] = useState(100);
+  const tier = useMemo(() => COST_TIERS.find((t) => count <= t.cap) ?? COST_TIERS[COST_TIERS.length - 1], [count]);
+  const perEmployee = Math.round(tier.price / Math.max(count, 1));
+
+  return (
+    <div className="rounded-[2rem] bg-gradient-soft p-6 md:p-8 shadow-card">
+      <label className="block text-sm font-medium">How many employees are you engaging?</label>
+      <div className="mt-4 flex items-center gap-4">
+        <input
+          type="range"
+          min={1}
+          max={500}
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+          className="flex-1 accent-primary h-1.5 rounded-full"
+        />
+        <span className="text-lg font-semibold w-14 text-right">{count}</span>
+      </div>
+
+      <div className="mt-6 grid grid-cols-3 gap-3">
+        <StatCard value={`₹${perEmployee}`} label="Cost per employee" />
+        <StatCard value={`₹${tier.price.toLocaleString("en-IN")}`} label="total package cost" />
+        <StatCard value={String(tier.groups)} label="groups auto-formed" />
+      </div>
+
+      <div className="mt-4 rounded-2xl bg-card/70 p-5 text-sm">
+        <p className="font-semibold mb-2">Simple Cost Breakdown:</p>
+        <ul className="space-y-1.5 text-muted-foreground">
+          <li><span className="text-primary font-medium">Zoventro {tier.name}</span> ({count} people) = ₹{tier.price.toLocaleString("en-IN")} | ₹{perEmployee}/person</li>
+          <li><span className="text-primary font-medium">Hired facilitator</span> = ₹35,000 – ₹40,500 | no reporting</li>
+          <li><span className="text-primary font-medium">Team Lunch</span> = ₹50,000 – | forgotten by next week</li>
+        </ul>
+      </div>
+
+      <div className="mt-4 rounded-2xl bg-card/70 p-5 flex items-center gap-3">
+        <div>
+          <p className="text-xs text-muted-foreground">Recommended:</p>
+          <span className="inline-block mt-1 rounded-full bg-gradient-primary text-white text-xs font-semibold px-3 py-1">{tier.name}</span>
+        </div>
+        <p className="text-xs text-muted-foreground flex-1">
+          Zoventro is up to 5x more cost-effective than traditional team activities.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function StatCard({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-xl bg-card p-4 text-center shadow-card">
+      <div className="text-lg font-bold text-primary">{value}</div>
+      <div className="mt-1 text-[11px] text-muted-foreground leading-tight">{label}</div>
+    </div>
+  );
+}
