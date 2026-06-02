@@ -191,32 +191,32 @@ function ActivityCard({ image, name, desc, accent = "purple" }: { image: string;
 function PriceCard({ plan }: { plan: typeof PLANS[number] }) {
   const popular = plan.popular;
   return (
-    <div className={`relative rounded-2xl p-7 shadow-card ${popular ? "bg-gradient-primary text-white" : "bg-card"}`}>
+    <div className={`group relative rounded-2xl p-7 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-elevated ${popular ? "bg-gradient-primary text-white" : "bg-card hover:bg-gradient-primary hover:text-white"}`}>
       {popular && (
         <div className="absolute -top-3 right-6 inline-flex items-center gap-1 rounded-full bg-warning text-foreground text-[10px] font-semibold uppercase tracking-wider px-3 py-1">
           <Crown className="h-3 w-3" /> Best Popular
         </div>
       )}
       <h3 className={`font-semibold text-lg ${popular ? "text-white" : ""}`}>{plan.name}</h3>
-      <p className={`mt-1 text-xs ${popular ? "text-white/75" : "text-muted-foreground"}`}>Best for: {plan.best}</p>
+      <p className={`mt-1 text-xs transition-colors duration-300 ${popular ? "text-white/75" : "text-muted-foreground group-hover:text-white/75"}`}>Best for: {plan.best}</p>
       <div className="mt-5 flex items-baseline gap-2">
         <span className="text-3xl font-bold">{plan.price}</span>
-        <span className={`text-xs ${popular ? "text-white/75" : "text-muted-foreground"}`}>One Time Payment</span>
+        <span className={`text-xs transition-colors duration-300 ${popular ? "text-white/75" : "text-muted-foreground group-hover:text-white/75"}`}>One Time Payment</span>
       </div>
-      <div className={`mt-5 pt-5 border-t ${popular ? "border-white/20" : "border-border"}`}>
-        <p className={`text-xs font-semibold mb-3 ${popular ? "text-white/85" : ""}`}>This plan includes:</p>
+      <div className={`mt-5 pt-5 border-t transition-colors duration-300 ${popular ? "border-white/20" : "border-border group-hover:border-white/20"}`}>
+        <p className={`text-xs font-semibold mb-3 ${popular ? "text-white/85" : "group-hover:text-white/85"}`}>This plan includes:</p>
         <ul className="space-y-2.5">
           {plan.includes.map((inc) => (
             <li key={inc} className="flex items-start gap-2 text-sm">
-              <Check className={`h-4 w-4 mt-0.5 shrink-0 ${popular ? "text-white" : "text-success"}`} />
-              <span className={popular ? "text-white/90" : "text-foreground/80"}>{inc}</span>
+              <Check className={`h-4 w-4 mt-0.5 shrink-0 transition-colors duration-300 ${popular ? "text-white" : "text-success group-hover:text-white"}`} />
+              <span className={`transition-colors duration-300 ${popular ? "text-white/90" : "text-foreground/80 group-hover:text-white/90"}`}>{inc}</span>
             </li>
           ))}
         </ul>
       </div>
-      <button className={`mt-6 w-full inline-flex items-center justify-between rounded-full pl-5 pr-1.5 py-1.5 text-sm font-medium ${popular ? "bg-white text-primary" : "bg-gradient-primary text-white"}`}>
+      <button className={`mt-6 w-full inline-flex items-center justify-between rounded-full pl-5 pr-1.5 py-1.5 text-sm font-medium transition-colors duration-300 ${popular ? "bg-white text-primary" : "bg-gradient-primary text-white group-hover:bg-white group-hover:text-primary"}`}>
         Pay &amp; Activate
-        <span className={`grid h-8 w-8 place-items-center rounded-full ${popular ? "bg-gradient-primary text-white" : "bg-white/20"}`}>→</span>
+        <span className={`grid h-8 w-8 place-items-center rounded-full transition-colors duration-300 ${popular ? "bg-gradient-primary text-white" : "bg-white/20 group-hover:bg-gradient-primary group-hover:text-white"}`}>→</span>
       </button>
     </div>
   );
